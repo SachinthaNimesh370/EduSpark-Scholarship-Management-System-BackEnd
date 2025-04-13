@@ -35,11 +35,16 @@ public class JWTServiceIMPL implements JWTService {
 
     @Override
     public String getUserName(String token) {
-        return Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
+        try {
+            return Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .getSubject();
+        }catch (Exception e){
+            System.err.println("Token parsing failed: " + e.getMessage());
+            return "Invalid Token";
+        }
     }
 }
