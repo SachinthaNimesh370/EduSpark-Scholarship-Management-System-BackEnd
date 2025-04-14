@@ -5,13 +5,14 @@ import io.jsonwebtoken.security.Keys;
 import lk.ac.jfn.uoj.EduSpark.service.JWTService;
 import org.springframework.stereotype.Service;
 
+
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 @Service
-public class JWTServiceIMPL implements JWTService {
+public class JWTServiceIMPL implements JWTService  {
     private final SecretKey secretKey;
 
     public JWTServiceIMPL() {
@@ -26,7 +27,7 @@ public class JWTServiceIMPL implements JWTService {
     @Override
     public String jwtToken() {
         return Jwts.builder()
-                .subject("Sachintha")
+                .subject("sachintha")
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis()+1000*60*15))
                 .signWith(secretKey)
@@ -44,7 +45,7 @@ public class JWTServiceIMPL implements JWTService {
                     .getSubject();
         }catch (Exception e){
             System.err.println("Token parsing failed: " + e.getMessage());
-            return "Invalid Token";
+            return null;
         }
     }
 }
