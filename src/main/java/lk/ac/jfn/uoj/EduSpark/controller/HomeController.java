@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/home")
+@RequestMapping("/home")
 public class HomeController {
     private final JWTService jwtService;
 
