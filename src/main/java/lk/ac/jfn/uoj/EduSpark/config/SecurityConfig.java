@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .sessionManagement(s->s
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(r->r
-                        .requestMatchers("api/v1/home/login")
+                        .requestMatchers("/home/login")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
