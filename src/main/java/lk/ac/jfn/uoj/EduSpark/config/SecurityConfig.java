@@ -1,6 +1,7 @@
 package lk.ac.jfn.uoj.EduSpark.config;
 
 
+import lk.ac.jfn.uoj.EduSpark.filter.JWTFilter;
 import lk.ac.jfn.uoj.EduSpark.service.IMPL.MyUserDetailServiceIMPL;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,14 +13,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
     private final MyUserDetailServiceIMPL myUserDetailServiceIMPL;
+    private final JWTFilter jwtFilter;
 
-    public SecurityConfig(MyUserDetailServiceIMPL myUserDetailServiceIMPL) {
+    public SecurityConfig(MyUserDetailServiceIMPL myUserDetailServiceIMPL, JWTFilter jwtFilter) {
         this.myUserDetailServiceIMPL = myUserDetailServiceIMPL;
+        this.jwtFilter = jwtFilter;
     }
 
     @Bean
@@ -34,6 +38,7 @@ public class SecurityConfig {
                         .anyRequest()
                         .authenticated()
                 )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(daoAuthenticationProvider())
                 .httpBasic(Customizer.withDefaults())
                 .build();
