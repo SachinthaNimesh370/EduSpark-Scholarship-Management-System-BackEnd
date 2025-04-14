@@ -1,6 +1,6 @@
 package lk.ac.jfn.uoj.EduSpark.controller;
 
-import lk.ac.jfn.uoj.EduSpark.DTO.UserDTO;
+import lk.ac.jfn.uoj.EduSpark.dto.UserDTO;
 import lk.ac.jfn.uoj.EduSpark.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;

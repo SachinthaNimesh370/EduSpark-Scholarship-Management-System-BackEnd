@@ -1,4 +1,4 @@
-package lk.ac.jfn.uoj.EduSpark.DTO;
+package lk.ac.jfn.uoj.EduSpark.dto;
 
 import lombok.Data;
 
