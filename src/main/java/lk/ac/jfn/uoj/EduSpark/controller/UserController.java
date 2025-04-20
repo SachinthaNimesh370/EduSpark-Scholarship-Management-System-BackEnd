@@ -2,11 +2,9 @@ package lk.ac.jfn.uoj.EduSpark.controller;
 
 import lk.ac.jfn.uoj.EduSpark.dto.UserDTO;
 import lk.ac.jfn.uoj.EduSpark.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:5173") // 👈 Add this
 @RestController
 @RequestMapping("/user")
 public class UserController {
