@@ -8,5 +8,7 @@ import java.util.Optional;
 public interface UserRepository extends MongoRepository<UserEntity,Integer> {
 
     Optional<UserEntity> findByName(String name);
+    boolean existsByName(String name);
+
 
 }
