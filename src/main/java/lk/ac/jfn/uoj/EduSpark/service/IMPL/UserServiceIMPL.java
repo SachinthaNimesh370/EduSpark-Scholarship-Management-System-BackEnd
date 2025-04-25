@@ -1,10 +1,13 @@
 package lk.ac.jfn.uoj.EduSpark.service.IMPL;
 
-import lk.ac.jfn.uoj.EduSpark.dto.UserDTO;
+import lk.ac.jfn.uoj.EduSpark.dto.UserLoginRequestDTO;
+import lk.ac.jfn.uoj.EduSpark.dto.UserRegRequestDTO;
 import lk.ac.jfn.uoj.EduSpark.entity.UserEntity;
 import lk.ac.jfn.uoj.EduSpark.repo.UserRepository;
 import lk.ac.jfn.uoj.EduSpark.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,18 +16,22 @@ public class UserServiceIMPL implements UserService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JWTServiceIMPL jwtService;
 
-    public UserServiceIMPL(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public UserServiceIMPL(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTServiceIMPL jwtService) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     @Override
-    public String signUp(UserDTO userDTO) {
+    public String signUp(UserRegRequestDTO userRegRequestDTO) {
         try {
-            UserEntity userEntity=modelMapper.map(userDTO,UserEntity.class);
-            userEntity.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+            UserEntity userEntity=modelMapper.map(userRegRequestDTO,UserEntity.class);
+            userEntity.setPassword(passwordEncoder.encode(userRegRequestDTO.getPassword()));
             System.out.println(userEntity.getPassword());
             userRepository.save(userEntity);
             return "ok";
@@ -32,5 +39,33 @@ public class UserServiceIMPL implements UserService {
             return e.getMessage();
         }
 
+    }
+
+    @Override
+    public String signIn(UserLoginRequestDTO userLoginRequestDTO) {
+        if(isEnablePerson(userLoginRequestDTO.getUserName())){
+            try {
+                System.out.println("OK");
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginRequestDTO.getUserName(),userLoginRequestDTO.getPassword()));
+                System.out.println("OK");
+                return jwtService.jwtToken(userLoginRequestDTO.getUserName());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return e.getMessage();
+
+            }
+
+
+        }
+        else{
+            System.out.println("<UNK>");
+            return "<UNK>";
+        }
+
+    }
+
+    @Override
+    public boolean isEnablePerson(String userName) {
+        return userRepository.existsByName(userName);
     }
 }

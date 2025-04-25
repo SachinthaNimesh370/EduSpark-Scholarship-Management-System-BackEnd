@@ -25,9 +25,9 @@ public class JWTServiceIMPL implements JWTService  {
     }
 
     @Override
-    public String jwtToken() {
+    public String jwtToken(String userName) {
         return Jwts.builder()
-                .subject("sachintha")
+                .subject(userName)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis()+1000*60*15))
                 .signWith(secretKey)
