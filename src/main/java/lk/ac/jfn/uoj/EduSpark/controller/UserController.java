@@ -5,6 +5,7 @@ import lk.ac.jfn.uoj.EduSpark.dto.UserLoginResponceDTO;
 import lk.ac.jfn.uoj.EduSpark.dto.UserRegRequestDTO;
 import lk.ac.jfn.uoj.EduSpark.service.JWTService;
 import lk.ac.jfn.uoj.EduSpark.service.UserService;
+import lk.ac.jfn.uoj.EduSpark.utill.ServiceResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +31,13 @@ public class UserController {
     @GetMapping("/signin")
     public UserLoginResponceDTO signIn(@RequestBody UserLoginRequestDTO userLoginRequestDTO){
 
-        String token = userService.signIn(userLoginRequestDTO);
-        return  new UserLoginResponceDTO(token,LocalDateTime.now());
+        ServiceResponse massage = userService.signIn(userLoginRequestDTO);
+        if(massage.isSuccess()){
+            return  new UserLoginResponceDTO(massage.getObject(),LocalDateTime.now());
+        }else {
+            return  new UserLoginResponceDTO(massage.getObject(),null);
+        }
+
     }
 
 }
