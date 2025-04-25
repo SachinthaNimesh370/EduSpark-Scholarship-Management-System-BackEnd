@@ -7,6 +7,6 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 public class UserLoginResponceDTO {
-    private Object token;
+    private Object massage;
     private LocalDateTime time;
 }
