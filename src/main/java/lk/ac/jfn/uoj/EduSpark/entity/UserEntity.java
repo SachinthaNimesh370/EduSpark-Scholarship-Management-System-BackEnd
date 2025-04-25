@@ -1,10 +1,10 @@
 package lk.ac.jfn.uoj.EduSpark.entity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 
-@Document(collection = "user")
+@Entity
 @Data
 public class UserEntity {
     @Id

@@ -5,6 +5,7 @@ import lk.ac.jfn.uoj.EduSpark.dto.UserRegRequestDTO;
 import lk.ac.jfn.uoj.EduSpark.entity.UserEntity;
 import lk.ac.jfn.uoj.EduSpark.repo.UserRepository;
 import lk.ac.jfn.uoj.EduSpark.service.UserService;
+import lk.ac.jfn.uoj.EduSpark.utill.ServiceResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,26 +43,21 @@ public class UserServiceIMPL implements UserService {
     }
 
     @Override
-    public String signIn(UserLoginRequestDTO userLoginRequestDTO) {
+    public ServiceResponse signIn(UserLoginRequestDTO userLoginRequestDTO) {
         if(isEnablePerson(userLoginRequestDTO.getUserName())){
             try {
-                System.out.println("OK");
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginRequestDTO.getUserName(),userLoginRequestDTO.getPassword()));
-                System.out.println("OK");
-                return jwtService.jwtToken(userLoginRequestDTO.getUserName());
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                userLoginRequestDTO.getUserName(),userLoginRequestDTO.getPassword()));
+                return new ServiceResponse(true,jwtService.jwtToken(userLoginRequestDTO.getUserName()));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-                return e.getMessage();
-
+                return new ServiceResponse(false,"Login failed. Please check your password.");
             }
-
-
         }
         else{
-            System.out.println("<UNK>");
-            return "<UNK>";
+            return new ServiceResponse(false,"Login failed. No registered user found with the provided information.");
         }
-
     }
 
     @Override
