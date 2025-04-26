@@ -53,15 +53,13 @@ public class UserServiceIMPL implements UserService {
                 authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
                                 userLoginRequestDTO.getUserName(),userLoginRequestDTO.getPassword()));
-
-                Map<String,String> map =clams(userLoginRequestDTO.getUserName());
-
-
-                return new ServiceResponse(true,jwtService.jwtToken(userLoginRequestDTO.getUserName(),map));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 return new ServiceResponse(false,"Login failed. Please check your password.");
             }
+            // After checking Valid user issue the key
+            Map<String,String> map =clams(userLoginRequestDTO.getUserName());
+            return new ServiceResponse(true,jwtService.jwtToken(userLoginRequestDTO.getUserName(),map));
         }
         else{
             return new ServiceResponse(false,"Login failed. No registered user found with the provided information.");
@@ -70,7 +68,6 @@ public class UserServiceIMPL implements UserService {
     private Map<String,String> clams(String userName){
         Map<String,String> map =new HashMap<>();
         map.put("role",userRepository.findRoleByName(userName));
-        System.out.println("Role is " + map.get("role"));
         return map;
     }
 
