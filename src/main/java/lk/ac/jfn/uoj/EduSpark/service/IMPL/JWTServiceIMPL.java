@@ -10,6 +10,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.Map;
 
 @Service
 public class JWTServiceIMPL implements JWTService  {
@@ -25,8 +26,9 @@ public class JWTServiceIMPL implements JWTService  {
     }
 
     @Override
-    public String jwtToken(String userName) {
+    public String jwtToken(String userName, Map<String,String> clams) {
         return Jwts.builder()
+                .claims(clams)
                 .subject(userName)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis()+1000*60*15))

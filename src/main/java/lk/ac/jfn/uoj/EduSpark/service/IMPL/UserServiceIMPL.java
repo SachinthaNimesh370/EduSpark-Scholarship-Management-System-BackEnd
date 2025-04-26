@@ -12,6 +12,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class UserServiceIMPL implements UserService {
     private final UserRepository userRepository;
@@ -45,11 +48,16 @@ public class UserServiceIMPL implements UserService {
     @Override
     public ServiceResponse signIn(UserLoginRequestDTO userLoginRequestDTO) {
         if(isEnablePerson(userLoginRequestDTO.getUserName())){
+
             try {
                 authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
                                 userLoginRequestDTO.getUserName(),userLoginRequestDTO.getPassword()));
-                return new ServiceResponse(true,jwtService.jwtToken(userLoginRequestDTO.getUserName()));
+
+                Map<String,String> map =clams(userLoginRequestDTO.getUserName());
+
+
+                return new ServiceResponse(true,jwtService.jwtToken(userLoginRequestDTO.getUserName(),map));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 return new ServiceResponse(false,"Login failed. Please check your password.");
@@ -58,6 +66,12 @@ public class UserServiceIMPL implements UserService {
         else{
             return new ServiceResponse(false,"Login failed. No registered user found with the provided information.");
         }
+    }
+    private Map<String,String> clams(String userName){
+        Map<String,String> map =new HashMap<>();
+        map.put("role",userRepository.findRoleByName(userName));
+        System.out.println("Role is " + map.get("role"));
+        return map;
     }
 
     @Override
