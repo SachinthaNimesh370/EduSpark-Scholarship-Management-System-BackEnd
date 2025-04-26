@@ -32,15 +32,19 @@ public class UserServiceIMPL implements UserService {
     }
 
     @Override
-    public String signUp(UserRegRequestDTO userRegRequestDTO) {
+    public ServiceResponse signUp(UserRegRequestDTO userRegRequestDTO) {
+        if(isEnablePerson(userRegRequestDTO.getName())){
+            return new ServiceResponse(false, "User already registered !");
+        }
+
         try {
             UserEntity userEntity=modelMapper.map(userRegRequestDTO,UserEntity.class);
             userEntity.setPassword(passwordEncoder.encode(userRegRequestDTO.getPassword()));
-            System.out.println(userEntity.getPassword());
             userRepository.save(userEntity);
-            return "ok";
+            return new ServiceResponse(true, "User registered successfully");
         }catch (Exception e){
-            return e.getMessage();
+            System.out.println(e.getMessage());
+            return new ServiceResponse(false, "Registration Failed");
         }
 
     }
@@ -48,7 +52,6 @@ public class UserServiceIMPL implements UserService {
     @Override
     public ServiceResponse signIn(UserLoginRequestDTO userLoginRequestDTO) {
         if(isEnablePerson(userLoginRequestDTO.getUserName())){
-
             try {
                 authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(

@@ -25,9 +25,20 @@ public class UserController {
     }
 
     @GetMapping("/signup")
-    public String signUp(@RequestBody UserRegRequestDTO userRegRequestDTO){
-        userService.signUp(userRegRequestDTO);
-        return "";
+    public ResponseEntity<StandardResponce> signUp(@RequestBody UserRegRequestDTO userRegRequestDTO){
+        ServiceResponse massage = userService.signUp(userRegRequestDTO);
+        if(massage.isSuccess()){
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(
+                            200, "Ok", massage.getObject()),
+                    HttpStatus.OK);
+        }else{
+            return new ResponseEntity<StandardResponce>(
+                    new StandardResponce(
+                            400, "Bad", massage.getObject()),
+                    HttpStatus.BAD_REQUEST);
+        }
+
     }
     @GetMapping("/signin")
     public ResponseEntity<StandardResponce> signIn(@RequestBody UserLoginRequestDTO userLoginRequestDTO){
