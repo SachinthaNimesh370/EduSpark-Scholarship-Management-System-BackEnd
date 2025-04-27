@@ -1,5 +1,8 @@
 package lk.ac.jfn.uoj.EduSpark.entity;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
@@ -8,7 +11,9 @@ import lombok.Data;
 @Data
 public class UserEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+
     String name;
     String email;
     String role;

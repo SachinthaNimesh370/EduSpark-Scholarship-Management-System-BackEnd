@@ -2,7 +2,7 @@ package lk.ac.jfn.uoj.EduSpark.controller;
 
 import lk.ac.jfn.uoj.EduSpark.service.JWTService;
 import org.springframework.web.bind.annotation.*;
-@CrossOrigin(origins = "http://localhost:5173") // 👈 Add this
+
 @RestController
 @RequestMapping("/home")
 public class HomeController {

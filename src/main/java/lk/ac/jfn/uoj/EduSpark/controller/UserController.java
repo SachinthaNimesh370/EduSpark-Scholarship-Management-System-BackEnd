@@ -24,8 +24,10 @@ public class UserController {
 
     }
 
-    @GetMapping("/signup")
+    @PostMapping("/signup")
     public ResponseEntity<StandardResponce> signUp(@RequestBody UserRegRequestDTO userRegRequestDTO){
+        System.out.println(userRegRequestDTO.getName());
+
         ServiceResponse massage = userService.signUp(userRegRequestDTO);
         if(massage.isSuccess()){
             return new ResponseEntity<StandardResponce>(
@@ -40,7 +42,7 @@ public class UserController {
         }
 
     }
-    @GetMapping("/signin")
+    @PostMapping("/signin")
     public ResponseEntity<StandardResponce> signIn(@RequestBody UserLoginRequestDTO userLoginRequestDTO){
 
         ServiceResponse massage = userService.signIn(userLoginRequestDTO);
